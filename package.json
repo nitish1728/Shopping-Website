@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
