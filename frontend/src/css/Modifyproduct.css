@@ -107,6 +107,7 @@ tr:hover {
   padding: 20px 30px;
   transition: 0.3s;
   z-index: 1000;
+  display: flex;
 }
 
 
@@ -129,6 +130,47 @@ tr:hover {
 .form-container {
   width: 90%;
   margin: 20px auto;
+}
+
+.showfields{
+    width:40%;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    align-items:center;
+    margin-top: 30px;
+    border-right: 2px solid grey;
+    margin-right: 20px;
+    transition: 0.3s;
+    overflow: scroll;
+    scroll-behavior: smooth;
+
+}
+
+.showfields .showfield-details{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    text-align: start;
+    justify-content: center;
+    font-size: 14px;
+    width:80%;
+    padding-right: 15px;
+}
+
+.showfields .showfield-details img{
+    width:100%;
+    max-width:300px;
+    height: auto;
+    border: 2px solid grey;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.2);
+}
+
+.showfields .showfield-details p{
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
 }
 
 .form-container form {
@@ -253,3 +295,41 @@ input[type="file"] {
   background-color: #fff;
   cursor: pointer;
 }
+
+/* Sticky headers for both panels */
+.showfields h2,
+.form-container h2 {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 10px 0;
+  z-index: 5;
+  border-bottom: 1px solid #ddd;
+  font-size: 23px;
+}
+
+/* Independent scrollbar styling */
+.showfields,
+.form-container {
+  max-height: 80vh;   /* keep within screen height */
+  overflow-y: auto;   /* scroll when needed */
+  scrollbar-width: thin;          /* Firefox */
+  scrollbar-color: #ccc transparent;
+}
+
+.showfields::-webkit-scrollbar,
+.form-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.showfields::-webkit-scrollbar-thumb,
+.form-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.showfields::-webkit-scrollbar-track,
+.form-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+

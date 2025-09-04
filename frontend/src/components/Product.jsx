@@ -19,7 +19,7 @@ const Product = (props) => {
             <div className="product-description">
                 <img src={props.image} alt={props.description} />
                 <h3>{props.title}</h3>
-                <span className='rating'>{props.rating_rate}</span>{rating}<span className='rating'>({props.rating_count} reviews)</span>
+                <span className='rating'>{props.rating_rate}</span>{rating}<span className='rating'>({props.rating_count>0?props.rating_count:0} reviews)</span>
                 <p className='price'>${props.price}</p>
             </div>
             <div className="buying-options">

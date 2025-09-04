@@ -3,29 +3,22 @@ const Schema=mongoose.Schema
 const productSchema = new Schema(
 {
   id:{
-    type: String,
-    required:true,
-    unique:true
+    type: String
   },
   title:{
-    type: String,
-    required:true
+    type: String
   },
   price:{
-    type: Number,
-    required:true
+    type: Number
   },
   description:{
-    type: String,
-    required:true
+    type: String
   },
   category:{
-    type: String,
-    required:true
+    type: String
   },
   stock:{
-    type:Number,
-    required:true
+    type:Number
   },
   sold:{
     type:Number,
@@ -33,7 +26,6 @@ const productSchema = new Schema(
   },
   image:{
     type: String,
-    required:true
   },
   imageId:{
     type: String,

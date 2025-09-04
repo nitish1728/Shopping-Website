@@ -38,6 +38,18 @@ const fetchProductsController=async(req,res)=>{
     res.json(products)
 }
 
+const fetchbyIDProductsController=async(req,res)=>{
+    try{
+        const id=req.params.id
+        const products=await Product.findOne({id:id}).exec()
+        res.json({products})
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({"message":"Failed to obtain Product"})
+    }
+}
+
 const deleteProductsController=async(req,res)=>{
     try{
         const id=req.params.id
@@ -60,7 +72,7 @@ const deleteProductsController=async(req,res)=>{
 
 }
 
-const updateProductsController =async(req,res)=>{
+const updateProductsController=async(req,res)=>{
     try{
         const id=req.params.id
         const exactProduct=await Product.findOne({id:id}).exec()
@@ -75,8 +87,11 @@ const updateProductsController =async(req,res)=>{
                 "folder":'Products'
             })
 
-            exactProduct.image(result.secure_url)
-            exactProduct.imageId(result.public_id)
+            exactProduct.image=result.secure_url
+            exactProduct.imageId=result.public_id
+        }
+        if(!req.body){
+            return res.status(400).json({"message":"Atleast one will be needed to update product"})
         }
         if(req.body.title) exactProduct.title=req.body.title
         if(req.body.price) exactProduct.price=req.body.price
@@ -85,6 +100,7 @@ const updateProductsController =async(req,res)=>{
         if(req.body.stock) exactProduct.stock=req.body.stock
         
         await exactProduct.save()
+        console.log("Product successfully updated")
         res.status(201).json({message:"Product Updated Successfully"})
     }
     catch(error){
@@ -93,4 +109,4 @@ const updateProductsController =async(req,res)=>{
     }
 }
 
-module.exports={addProductController,fetchProductsController,deleteProductsController,updateProductsController}
+module.exports={addProductController,fetchProductsController,fetchbyIDProductsController,deleteProductsController,updateProductsController}

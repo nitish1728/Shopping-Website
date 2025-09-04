@@ -20,6 +20,10 @@ export default function Modifyproduct() {
   const [preview, setPreview] = useState(null);
   const [formerror, setFormError] = useState("");
 
+  //Update Page
+  const [showUpdatepage,setShowUpdatepage]=useState(false);
+  const [product, setProduct] = useState([]);
+
   // Fetch products
   const getProducts = async () => {
     try {
@@ -46,10 +50,16 @@ export default function Modifyproduct() {
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "Cancel",
+      cancelButtonColor:"#DC3545",
+      reverseButtons: true
     });
 
     if (!result.isConfirmed) {
-      Swal.fire("Cancelled", "Your product is safe!", "info");
+      Swal.fire({
+        title:"Cancelled",
+        text:"Your product is safe!",
+        icon:"info",
+      });
       return;
     }
 
@@ -103,6 +113,7 @@ export default function Modifyproduct() {
     formData.append("category", category);
     formData.append("stock", stock);
     formData.append("image", image);
+    console.log(formData)
 
     try {
       await axios.post("http://localhost:3000/product/add", formData, {
@@ -123,7 +134,7 @@ export default function Modifyproduct() {
     setTitle("");
     setPrice("");
     setDescription("");
-    setCategory("Clothing");
+    setCategory("");
     setStock("");
     setImage(null);
     setPreview(null);
@@ -132,12 +143,55 @@ export default function Modifyproduct() {
   }
 
   // Placeholder for future update
-  function updateProduct(id) {
-    Swal.fire("Coming Soon!", `Update feature for Product ID: ${id}`, "info");
+  async function updateProduct(id) {
+    // Swal.fire("Coming Soon!", `Update feature for Product ID: ${id}`, "info");
+    setShowPage(true)
+    setShowUpdatepage(true)
+    try{
+      const res = await axios.get(`http://localhost:3000/product/fetch/${id}`);
+      setProduct(res.data.products)
+    }
+    catch(error){
+      Swal.fire("Error!", "Failed to update product. Try again.", "error");
+    }
   }
 
+  async function handleUpdate(e){
+    e.preventDefault();
+    setFormError("");
+    setFormLoading(true);
+
+    const formUpdateData = new FormData();
+    if(title)formUpdateData.append("title", title);
+    if(price)formUpdateData.append("price", price);
+    if(description)formUpdateData.append("description", description);
+    if(category)formUpdateData.append("category", category);
+    if(stock)formUpdateData.append("stock", stock);
+    if(image)formUpdateData.append("image", image);
+
+    console.log(formUpdateData.entries.length)
+    try {
+      await axios.put(`http://localhost:3000/product/update/${product.id}`, 
+      formUpdateData,
+    {
+       headers: {
+      "Content-Type": "multipart/form-data",
+      },
+    });
+      Swal.fire("Success!", `${product.id} updated successfully 🎉`, "success");
+      getProducts();
+      resetForm();
+    } catch (err) {
+      Swal.fire("Error!", "Failed to update product. Try again.", "error");
+    } finally {
+      setShowPage(false);
+      setFormLoading(false);
+      setShowUpdatepage(false)
+    }
+  }
   function closeBtn(){
     setShowPage(false)
+    setShowUpdatepage(false)
     resetForm()
   }
 
@@ -156,8 +210,8 @@ export default function Modifyproduct() {
             <thead>
               <tr>
                 <th>Image</th>
-                <th>ProductID</th>
-                <th>Name</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
                 <th>Category</th>
                 <th>Price</th>
                 <th>Stock</th>
@@ -184,8 +238,8 @@ export default function Modifyproduct() {
                   <td>{p.sold}</td>
                   <td>
                     <div className="actions">
-                      <button className="edit" onClick={() => updateProduct(p.id)}>Edit</button>
-                      <button className="delete" onClick={() => deleteProduct(p.id)}>Delete</button>
+                      <button className="edit" onClick={() => updateProduct(p.id) }>Edit</button>
+                      <button className="delete" onClick={() => deleteProduct(p.id)} disabled={showUpdatepage}>Delete</button>
                     </div>
                   </td>
                 </tr>
@@ -199,18 +253,34 @@ export default function Modifyproduct() {
 
       {/* Add Product Form */}
       {showPage && (
-        <div className="overlay">
-          <div className="form-container">
+        
+        <div className="overlay" style={{width:showUpdatepage?"90%":"40%"}}>
+          {showUpdatepage && (
+            <div className="showfields">
+              <div className="showfield-details">
+                <h2>Current Product Details</h2>
+                <img src={product.image} alt={product.title} width="100" height="100" />
+                <p><b>ID:</b> {product.id}</p>
+                <p><b>Title:</b> {product.title}</p>
+                <p><b>Category:</b> {product.category}</p>
+                <p><b>Description:</b> {product.description}</p>
+                <p><b>Price:</b> ${product.price}</p>
+                <p><b>Stock:</b>{product.stock}</p>
+              </div>
+            </div>
+            )
+          }
+          <div className="form-container" style={{width:showUpdatepage?"50%":"90%"}}>
             <button onClick={() => closeBtn()} id="closeBtn">
               ✖
             </button>
-            <h2>Add Product</h2>
+            <h2>{showUpdatepage?"Update":"Add"} Product</h2>
             {formerror && (
               <div className="error-message" style={{ color: "red", marginBottom: "10px" }}>
                 {formerror}
               </div>
             )}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={showUpdatepage?handleUpdate:handleSubmit}>
               <div className="product-title">
                 <label htmlFor="title">Product Title</label>
                 <input
@@ -218,7 +288,7 @@ export default function Modifyproduct() {
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  required
+                  required={!showUpdatepage}
                 />
               </div>
 
@@ -228,12 +298,13 @@ export default function Modifyproduct() {
                   id="category"
                   value={ category!==''?category:''}
                   onChange={(e) => setCategory(e.target.value)}
-                  required
+                  required={!showUpdatepage}
                 >
                   <option value="" disabled>Choose Category</option>
                   <option value="Clothing">Clothing</option>
                   <option value="Jewellery">Jewellery</option>
                   <option value="Electronics">Electronics</option>
+                  required={!showUpdatepage}
                 </select>
               </div>
 
@@ -243,7 +314,7 @@ export default function Modifyproduct() {
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  required
+                  required={!showUpdatepage}
                 />
               </div>
 
@@ -254,7 +325,7 @@ export default function Modifyproduct() {
                   id="price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  required
+                  required={!showUpdatepage}
                 />
               </div>
 
@@ -265,7 +336,7 @@ export default function Modifyproduct() {
                   id="stock"
                   value={stock}
                   onChange={(e) => setStock(e.target.value)}
-                  required
+                  required={!showUpdatepage}
                 />
               </div>
 
@@ -275,7 +346,7 @@ export default function Modifyproduct() {
                   type="file"
                   id="image"
                   onChange={(e) => setImage(e.target.files[0])}
-                  required
+                  required={!showUpdatepage}
                 />
               </div>
 
@@ -298,7 +369,7 @@ export default function Modifyproduct() {
               <div className="submit">
                 <input type="reset" value="Reset" onClick={resetForm} />
                 <button type="submit" disabled={formloading}>
-                  {formloading ? "Loading..." : "Submit"}
+                  {formloading ? "Loading..." :showUpdatepage?"Update":"Submit"}
                 </button>
               </div>
             </form>
