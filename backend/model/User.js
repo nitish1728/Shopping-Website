@@ -2,11 +2,12 @@ const mongoose=require('mongoose')
 const Schema=mongoose.Schema;
 const userSchema = new Schema(
     {
-        name:{
+        id:String,
+        user:{
             type:String,
             required:true
         },
-        Email:{
+        gmail:{
             type:String,
             required:true
         },
@@ -14,6 +15,11 @@ const userSchema = new Schema(
             type:String,
             required:true
         },
+        roles:{
+            type:Number,
+            default:1008
+        },
+        refreshToken:String,
         favourites:[
             {
                     type:Schema.Types.ObjectId, ref:"Product"
@@ -34,8 +40,7 @@ const userSchema = new Schema(
         orders:[
             {
                 orderid:{
-                    type:String,
-                    required:true
+                    type:String
                 },
                 products:[
                     {

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "./../../css/Modifyproduct.css";
+import './../../css/Admin-CSS/Modifyproduct.css';
+import api,{ setAuthToken } from '../../javascript/api.js'
 
 export default function Modifyproduct() {
   const [products, setProducts] = useState([]);
@@ -27,7 +28,7 @@ export default function Modifyproduct() {
   // Fetch products
   const getProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/product/fetch");
+      const res = await api.get("/product/fetch");
       setProducts(res.data);
     } catch (err) {
       setError("Failed to fetch products");
@@ -71,7 +72,7 @@ export default function Modifyproduct() {
     });
 
     try {
-      await axios.delete(`http://localhost:3000/product/delete/${id}`);
+      await api.delete(`/authProduct/delete/${id}`);
       Swal.close();
       Swal.fire("Deleted!", "Product has been deleted.", "success");
       getProducts();
@@ -116,7 +117,7 @@ export default function Modifyproduct() {
     console.log(formData)
 
     try {
-      await axios.post("http://localhost:3000/product/add", formData, {
+      await api.post("/authProduct/add", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       Swal.fire("Success!", "Product uploaded successfully 🎉", "success");
@@ -148,7 +149,7 @@ export default function Modifyproduct() {
     setShowPage(true)
     setShowUpdatepage(true)
     try{
-      const res = await axios.get(`http://localhost:3000/product/fetch/${id}`);
+      const res = await api.get(`/product/fetch/${id}`);
       setProduct(res.data.products)
     }
     catch(error){
@@ -171,7 +172,7 @@ export default function Modifyproduct() {
 
     console.log(formUpdateData.entries.length)
     try {
-      await axios.put(`http://localhost:3000/product/update/${product.id}`, 
+      await api.put(`/authProduct/update/${product.id}`, 
       formUpdateData,
     {
        headers: {
@@ -197,9 +198,11 @@ export default function Modifyproduct() {
 
   return (
     <>
-      <button className="add-btn" onClick={() => setShowPage(true)}>
-        Add Product
-      </button>
+      <div className="add-product">
+        <button className="add-btn" onClick={() => setShowPage(true)}>
+          Add Product
+        </button>
+      </div>
 
       <div className="container">
         {loading && <h3>Loading products...</h3>}

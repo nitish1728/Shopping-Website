@@ -1,0 +1,42 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+.navbar{
+    display: flex;
+    padding:20px;
+    justify-content: space-between;
+    background-color:aquamarine
+}
+
+.navbar .navbar-logo h2{
+    text-transform: uppercase;
+}
+
+.navbar-buttons nav ul{
+    list-style-type: none;
+    display: flex;
+    gap:20px;
+    text-decoration: none;
+}
+
+.navbar-buttons nav ul li{
+    gap:10px;
+    font-size: 20px;
+}
+
+.navbar-buttons nav ul li a{
+    text-decoration: none;
+    padding:10px;
+    color: black;
+    transition: 0.5s;
+}
+
+.navbar-buttons nav ul li a:hover{
+    background-color: beige;
+    border-radius: 5px;
+}
+
+

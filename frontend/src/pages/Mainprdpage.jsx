@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Product from '../components/Product'
 import './../css/Home.css';
 import axios from 'axios'
-
+import api,{ setAuthToken } from './../javascript/api.js';
 
 function Mainprdpage() {
   const [message, setMessage] = useState([]);
@@ -12,7 +12,7 @@ function Mainprdpage() {
 
   const getProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/product/fetch");
+      const res = await api.get("/product/fetch");
       setMessage(res.data);
     } catch (err) {
       console.error("Error fetching products:", err);
