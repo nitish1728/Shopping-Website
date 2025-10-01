@@ -5,8 +5,12 @@ export default function UserNavbar() {
     async function handleLogout(){
         await api.post('/logout')
         console.log("Log Out")
-        navigate('/')
-        location.reload()
+        navigate('/logedout')
+        setTimeout(()=>{
+           navigate('/')
+           location.reload()
+        },5000)
+       
     }
   return (
     <div className="navbar">
@@ -17,6 +21,8 @@ export default function UserNavbar() {
         <nav>
           <ul>
             <li><Link to="/">Products</Link></li>
+            <li><Link to="/favourites">Favourites</Link></li>
+            <li><Link to="/products/cart">Cart</Link></li>
             <button onClick={handleLogout}>Log Out</button>
           </ul>
         </nav>
