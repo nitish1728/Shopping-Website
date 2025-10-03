@@ -1,17 +1,18 @@
-import React from 'react'
+import {useEffect,useState} from 'react'
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 import './../css/Product.css';
 import Icon from '../images/favourite_icon.png';
 import FavouriteIcon from './../images/after_favourite_icon.png';
-const Product = (props) => {
+import api,{ setAuthToken } from './../javascript/api.js';
+export default function Product(props){
   const ratings=[1,2,3,4,5]
-  const real_rating=Math.floor(props.rating_rate)
+  const real_rating=Math.floor(props.rating_rate || 0);
   const rating=ratings.map(each=>(
-  <span 
-      key={each} 
-      className={`fa fa-star ${each <= real_rating ? 'checked' : ''}`} 
+    <span 
+        key={each} 
+        className={`fa fa-star ${each <= real_rating ? 'checked' : ''}`} 
     ></span>
-))
+  ))
 
   return (
     <>
@@ -26,11 +27,13 @@ const Product = (props) => {
                 <button>Add to Cart</button>
                 <button>Buy Now</button>
             </div>
-            <div className='Favourite'><button onClick={()=>props.addFavorites(props.id)}>{props.isFavourite?<img src={FavouriteIcon} alt="" />:<img src={Icon} alt="" />}</button></div>
+            <div className='Favourite'>
+              <button 
+                onClick={()=>props.addFavorites(props.mongoid)}>
+                {props.isFavourite?<img src={FavouriteIcon} alt="Add to Favourites" />:<img src={Icon} alt="" />}
+              </button></div>
             <button></button>
         </div>
     </>
   )
 }
-
-export default Product

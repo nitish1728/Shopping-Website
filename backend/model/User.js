@@ -22,13 +22,13 @@ const userSchema = new Schema(
         refreshToken:String,
         favourites:[
             {
-                    type:Schema.Types.ObjectId, ref:"Product"
+                    type:Schema.Types.ObjectId, ref:"Products"
             }
         ],
         cart:[
             {
                 product:{
-                    type:Schema.Types.ObjectId,ref:"Product"
+                    type:Schema.Types.ObjectId,ref:"Products"
                 },
                 quantity:{
                     type:Number,
@@ -45,7 +45,7 @@ const userSchema = new Schema(
                 products:[
                     {
                         product:{
-                            type:Schema.Types.ObjectId,ref:"Product"
+                            type:Schema.Types.ObjectId,ref:"Products"
                         },
                         quantity:{
                             type:Number,

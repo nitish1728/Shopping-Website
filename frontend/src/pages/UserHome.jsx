@@ -5,10 +5,10 @@ import {Routes,Route} from 'react-router-dom'
 import NotFound from './NotFound.jsx';
 import Favourites from './Favourites.jsx';
 import Cart from './Cart.jsx';
-export default function UserHome(){
+export default function UserHome({ setLoggedIn, setRole, user}){
     return(
         <>
-            <Navbar />
+            <Navbar setLoggedIn={setLoggedIn} setRole={setRole} user={user} />
             <div className="navbar-contents">
                 <Routes>
                     <Route path="/logedout" element={<LogedOut />} />

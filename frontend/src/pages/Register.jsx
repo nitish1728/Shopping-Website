@@ -10,6 +10,13 @@ export default function Register(){
     const [loading,setLoading]=useState(false)
     const [error,setError]=useState("")
 
+    function resetForm(){
+        setUser("")
+        setGmail("")
+        setPass("")
+        setError("")
+    }
+
     async function handleRegister(e){
         e.preventDefault()
         try{
@@ -18,7 +25,8 @@ export default function Register(){
                 gmail,
                 pass
             });
-            Swal.fire("Success!", "Product uploaded successfully 🎉", "success")
+            Swal.fire("Success!",`${user} registered successfully 🎉`, "success")
+            resetForm()
         }
         catch(error){
             console.log(error.message)

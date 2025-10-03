@@ -5,14 +5,14 @@ import Users from './admin_pages/Users.jsx';
 import Orders from './admin_pages/UnshippedOrders.jsx';
 import Footer from '../components/Footer.jsx';
 import NotFound from './NotFound.jsx';
-export default function AdminHome(){
+export default function AdminHome({ setLoggedIn, setRole, user}){
     const location=useLocation()
 
     const showLayout=["/","/orders",'/users'].includes(location.pathname)
     console.log(showLayout)
     return(
         <>
-            {showLayout && <Navbar />}
+            {showLayout && <Navbar setLoggedIn={setLoggedIn} setRole={setRole} user={user} />}
             <div className="navbar-contents">
                 <Routes>
                     <Route path="/" element={<Product />} />
