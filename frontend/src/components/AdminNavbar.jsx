@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import './../css/Admin-CSS/AdminNavbar.css';
 import api from './../javascript/api.js';
@@ -45,9 +45,28 @@ export default function AdminNavbar({ setLoggedIn, setRole,user }) {
       <div className="navbar-buttons">
         <nav>
           <ul>
-            <li><Link to="/">Products</Link></li>
-            <li><Link to="/orders">Orders</Link></li>
-            <li><Link to="/users">Users</Link></li>
+            <li>
+                <NavLink 
+                    to="/"
+                    className={({isActive})=>isActive?"active-link":""}
+                >
+                Products
+                </NavLink>
+            </li>
+            <li>
+                <NavLink 
+                    to="/orders"
+                    className={({isActive})=>isActive?"active-link":""}
+                >Orders
+                </NavLink>
+            </li>
+            <li>
+                <NavLink 
+                    to="/users"
+                    className={({isActive})=>isActive?"active-link":""}
+                >Users
+                </NavLink>
+            </li>
             <li>
               <button onClick={handleLogout}>Log Out</button>
             </li>

@@ -1,5 +1,5 @@
 import './../css/Navbar.css';
-import {Link} from "react-router-dom"
+import {NavLink} from "react-router-dom"
 export default function Navbar(){
     return(
         <>
@@ -10,9 +10,27 @@ export default function Navbar(){
                 <div className="navbar-buttons">
                     <nav>
                         <ul>
-                            <li><Link to="/">Products</Link></li>
-                            <li><Link to="/register">Register</Link></li>
-                            <li><Link to="/login">Log in</Link></li>
+                            <li>
+                                <NavLink 
+                                    to="/"
+                                    className={({isActive})=>isActive?"active-link":""}
+                                >Products
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink 
+                                    to="/register"
+                                    className={({isActive})=>isActive?"active-link":""}
+                                >Register
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink 
+                                    to="/login"
+                                    className={({isActive})=>isActive?"active-link":""}
+                                >Log in
+                                </NavLink>
+                            </li>
                         </ul>
                     </nav>
                 </div>

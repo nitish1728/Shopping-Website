@@ -1,4 +1,4 @@
-import { Link,useNavigate } from "react-router-dom";
+import { NavLink,useNavigate} from "react-router-dom";
 import api,{ setAuthToken } from './../javascript/api.js';
 import Swal from "sweetalert2";
 export default function UserNavbar({ setLoggedIn, setRole,user }) {
@@ -43,10 +43,32 @@ export default function UserNavbar({ setLoggedIn, setRole,user }) {
       <div className="navbar-buttons">
         <nav>
           <ul>
-            <li><Link to="/">Products</Link></li>
-            <li><Link to="/favourites">Favourites</Link></li>
-            <li><Link to="/products/cart">Cart</Link></li>
-            <button onClick={handleLogout}>Log Out</button>
+            <li>
+              {/* Navlink used instead of link to find the active page in the navbar*/}
+              <NavLink 
+                to="/"
+                className={({isActive})=>isActive?"active-link":""}
+              >
+              Products
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/favourites"
+                className={({isActive})=>isActive?"active-link":""}
+              >
+              Favourites
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                to="/products/cart"
+                className={({isActive})=>isActive?"active-link":""}
+              >
+              Cart
+              </NavLink>
+            </li>
+            <li><button onClick={handleLogout}>Log Out</button></li>
           </ul>
         </nav>
       </div>
