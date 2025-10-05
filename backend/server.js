@@ -35,6 +35,7 @@ app.use('/logout',require('./routes/logout'))
 app.use('/fetchAuth',require('./routes/fetchAuth'))
 app.use('/authProduct',require('./routes/loggedinProduct'))
 app.use('/favourites',require('./routes/favourites'))
+app.use('/products/cart',require('./routes/cart'))
 
 mongoose.connection.once('open',()=>{
     console.log('Database connected Successfully')

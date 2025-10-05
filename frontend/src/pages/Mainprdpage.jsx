@@ -12,6 +12,7 @@ function Mainprdpage() {
   const [filter,setfilter]=useState('All')
   const [Favourites,setFavourites]=useState([]);
   const [isloggedIn, setIsloggedIn] = useState(false);
+  const [cartProducts,setCartProducts]=useState([]);
    const navigate = useNavigate();
 
   useEffect( ()=>{
@@ -65,7 +66,7 @@ function Mainprdpage() {
     getFavourites()
   },[isloggedIn])
 
-  console.log(message)
+  
   function modifyFilter(filteredproduct){
     setfilter(filteredproduct)
   }
@@ -102,6 +103,36 @@ function Mainprdpage() {
     }
   }
 
+  async function getCartProducts(){
+      const response=await api.get('/products/cart/fetch');
+      const getProducts=response.data.cartProducts.cart.map(each=>each.product._id)
+      console.log(getProducts)
+      setCartProducts(getProducts)
+  }
+
+  useEffect(()=>{
+    getCartProducts()
+  },[])
+
+  async function addCart(id){
+    await api.put(`/products/cart/update/${id}`)
+    Swal.fire({
+            toast:true,
+            position: "top-end",
+            title:`${id}`,
+            text:"successfully added to cart",
+            icon:"info",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: "#f0f9ff",
+            color: "#000"          
+    });
+    }
+
+  function checkOut(id){
+    
+  }
   const items=(products && products.length > 0)
     ?products.map(each=>(
         <Product  
@@ -116,7 +147,11 @@ function Mainprdpage() {
               // rating_rate={each.rating.rate}
               // rating_count={each.rating.count}
               isFavourite={Favourites.includes(each._id)}
+              isCart={cartProducts.includes(each._id)}
               addFavorites={addFavorites}
+              addCart={addCart}
+              checkOut={checkOut}
+
         />      
       ))
     : <h3>No Products Found</h3>

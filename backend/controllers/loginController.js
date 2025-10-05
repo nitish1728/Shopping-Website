@@ -46,7 +46,7 @@ const loginController=async(req,res)=>{
         res.status(200).json({accessToken})
     }
     catch(error){
-        res.status(500).json({"message":"Unable to log in user"})
+        return res.status(500).json({"message":"Unable to log in user"})
     }
 }
 

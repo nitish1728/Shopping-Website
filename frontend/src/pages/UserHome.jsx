@@ -5,7 +5,8 @@ import {Routes,Route} from 'react-router-dom'
 import NotFound from './NotFound.jsx';
 import Favourites from './Favourites.jsx';
 import Cart from './Cart.jsx';
-export default function UserHome({ setLoggedIn, setRole, user}){
+import Footer from './../components/Footer.jsx';
+export default function UserHome({ setLoggedIn, setRole, user,token}){
     return(
         <>
             <Navbar setLoggedIn={setLoggedIn} setRole={setRole} user={user} />
@@ -18,6 +19,7 @@ export default function UserHome({ setLoggedIn, setRole, user}){
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
+            <Footer />
         </>
     )
 }

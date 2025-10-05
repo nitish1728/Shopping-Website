@@ -51,10 +51,20 @@ function App() {
 
   useEffect(()=>{
     async function attachToken(){
-      const response=await api.get("/refresh")
-      const accessToken=response.data.accessToken
-      setAuthToken(accessToken)
-      if(isLoggedin)setToken(accessToken)
+      try{
+        const response=await api.get("/refresh")
+        const accessToken=response.data.accessToken
+        setAuthToken(accessToken)
+        if(isLoggedin)setToken(accessToken)
+      }
+      catch(error){
+        console.log("Refresh Token expired or invalid",error.message)
+        await api.post("/logout").catch(() => {});
+        Swal.fire("Session expired", "Please log in again", "info");
+        setRole("");
+        setLoggedIn(false);
+        setUser("");
+      }
     }
     attachToken()
     const reattachToken=setTimeout(()=>{
@@ -62,7 +72,7 @@ function App() {
     },14*60*1000)
 
     return () => clearInterval(reattachToken);
-  },[])
+  },[isLoggedin])
   if (loading) return <div>Loading...</div>;
   return (
     <>

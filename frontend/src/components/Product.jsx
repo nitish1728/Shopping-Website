@@ -5,6 +5,7 @@ import Icon from '../images/favourite_icon.png';
 import FavouriteIcon from './../images/after_favourite_icon.png';
 import api,{ setAuthToken } from './../javascript/api.js';
 export default function Product(props){
+  console.log(props.isCart)
   const ratings=[1,2,3,4,5]
   const real_rating=Math.floor(props.rating_rate || 0);
   const rating=ratings.map(each=>(
@@ -24,8 +25,8 @@ export default function Product(props){
                 <p className='price'>${props.price}</p>
             </div>
             <div className="buying-options">
-                <button>Add to Cart</button>
-                <button>Buy Now</button>
+                {props.isCart?<button>Go to Cart</button>:<button onClick={()=>props.addCart(props.mongoid)}>Add to Cart</button>}
+                <button onClick={()=>props.checkOut(props.mongoid)}>Buy Now</button>
             </div>
             <div className='Favourite'>
               <button 

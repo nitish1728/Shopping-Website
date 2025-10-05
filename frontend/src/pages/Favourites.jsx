@@ -10,6 +10,7 @@ export default function Favourites(){
     const [loading, setLoading] = useState(true);
     const [filter,setfilter]=useState('All')
     const [isloggedIn, setIsloggedIn] = useState(false);
+    const [cartProducts,setCartProducts]=useState([])
     const navigate = useNavigate();
 
     useEffect( ()=>{
@@ -53,6 +54,17 @@ export default function Favourites(){
     useEffect(()=>{
         fetchFavourites()
     },[isloggedIn])
+
+    async function getCartProducts(){
+        const response=await api.get('/products/cart/fetch');
+        const getProducts=response.data.cartProducts.cart.map(each=>each.product.id)
+        console.log(getProducts)
+        setCartProducts(getProducts)
+    }
+
+    useEffect(()=>{
+        getCartProducts()
+    },[])
     
     async function addFavorites(id){
         if(isloggedIn){
@@ -123,6 +135,26 @@ export default function Favourites(){
         }
     }
 
+    async function addCart(id){
+        await api.put(`/products/cart/update/${id}`)
+        await Swal.fire({
+                toast:true,
+                position: "top-end",
+                title:`${id}`,
+                text:"successfully added to cart",
+                icon:"info",
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: "#f0f9ff",
+                color: "#000"          
+        });
+    }
+
+    function checkOut(id){
+    
+    }
+
     function modifyFilter(filteredproduct){
         setfilter(filteredproduct)
     }
@@ -145,9 +177,12 @@ export default function Favourites(){
                     category={each.category}
                     image={each.image}
                     isFavourite={true}
+                    isCart={cartProducts.includes(each.id)}
                     addFavorites={addFavorites}
                     // rating_rate={each.rating.rate}
                     // rating_count={each.rating.count}
+                    addCart={addCart}
+                    checkOut={checkOut}
             />      
           ))
         : <h3>No favourites found</h3>
@@ -177,6 +212,7 @@ export default function Favourites(){
                         {loading?<h2>Loading..</h2>:items}
                     </div>
                 </div>
+                <div className="product-cart"></div>
             </div>
         </>
     )

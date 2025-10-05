@@ -26,6 +26,7 @@ const fetchfavouritesController=async(req,res)=>{
     }
 }
 
+
 const updateFavouritesController=async(req,res)=>{
     try{
         const id=req.params.id;

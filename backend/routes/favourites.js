@@ -7,4 +7,6 @@ const {fetchfavouritesController,updateFavouritesController}=require('../control
 
 router.get('/fetch',verifyJWT,verifyRoles(ROLES.USER),fetchfavouritesController)
 router.patch('/update/:id',verifyJWT,verifyRoles(ROLES.USER),updateFavouritesController)
+
+
 module.exports=router
